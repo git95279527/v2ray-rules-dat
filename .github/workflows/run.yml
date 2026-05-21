@@ -2,7 +2,7 @@ name: Build V2Ray rules dat files
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 22 * * *"
+    - cron: "0 0 * * 1"
   push:
     branches:
       - master
@@ -132,6 +132,12 @@ jobs:
 
       - name: Write lists to data directory
         run: |
+          curl -o myreject.txt https://raw.githubusercontent.com/git95279527/MosDNS/main/blocklist.txt
+          curl -o mydirect.txt https://raw.githubusercontent.com/git95279527/MosDNS/main/whitelist.txt
+          sed -i '/^#/d' myreject.txt
+          sed -i '/^#/d' mydirect.txt
+          cat mydirect.txt >> temp-cn.txt
+          cat myreject.txt >> temp-category-ads-all.txt
           cat temp-cn.txt | sort --ignore-case -u | perl -ne '/^((?=^.{1,255})[a-zA-Z0-9][-_a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-_a-zA-Z0-9]{0,62})*)/ && print "$1\n"' > ./community/data/cn
           cat temp-cn.txt | sort --ignore-case -u | perl -ne 'print if not /^((?=^.{3,255})[a-zA-Z0-9][-_a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-_a-zA-Z0-9]{0,62})+)/' > direct-tld-list.txt
           cat temp-geolocation-\!cn.txt | sort --ignore-case -u | perl -ne '/^((?=^.{1,255})[a-zA-Z0-9][-_a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-_a-zA-Z0-9]{0,62})*)/ && print "$1\n"' > ./community/data/geolocation-\!cn
