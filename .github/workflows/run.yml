@@ -101,6 +101,9 @@ jobs:
           cat proxy.txt >> temp-proxy.txt
           cat direct.txt >> temp-direct.txt
           cat reject.txt >> temp-reject.txt
+          curl -o myproxy.txt https://raw.githubusercontent.com/git95279527/MosDNS/main/proxy.txt
+          sed -i '/^#/d' myproxy.txt
+          cat myproxy.txt >> temp-proxy.txt
 
       - name: Sort and generate redundant lists
         run: |
