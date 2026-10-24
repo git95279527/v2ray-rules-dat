@@ -23,4 +23,5 @@ jobs:
           releases_keep_latest: 2
           delete_tags: true
           delete_workflows: true
+          keep_minimum_runs: 2
           workflows_keep_day: 0
